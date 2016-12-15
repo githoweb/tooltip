@@ -27,7 +27,11 @@ function getTooltipTargets(attribute){
 function tooltipActive(){
 
     if( tooltipIsActive == 0 ){
-        createTooltipDom()
+
+        getElementPosition();
+        getElementDimensions();
+
+        createTooltipDom();
         tooltipIsActive = 1;
     }
 }
@@ -41,11 +45,33 @@ function tooltipInactive(){
     }
 }
 
+function getElementPosition(){
+  var left = event.target.offsetLeft;
+  var top = event.target.offsetTop;
+  console.log('position' + ' ' + left + ' ' + top);
+}
+
+function getElementDimensions(){
+  var width = event.target.offsetWidth;
+  var height = event.target.offsetHeight;
+  var dimensions = [width, height];
+  console.log('dimensions' + ' ' + width + ' ' + height);
+  return dimensions;
+}
+
 function createTooltipDom(){
+    var e = event.target;
+    console.log('event.target' + e.getAttribute('data-tooltip'));
+    var label = e.getAttribute('data-tooltip');
     var tooltipContainer = document.createElement('div');
     var tooltipCssClass = tooltipContainer.setAttribute('class', 'tooltip');
-    tooltipContainer.innerHTML = 'Mon texte';
+    //tooltipContainer.setAttribute("style", "left:"+ getElementDimensions[0] +"px;");
+    tooltipContainer.innerHTML = label;
     tooltipHolder.appendChild(tooltipContainer);
+}
+
+function tooltipPosition(){
+
 }
 
 getTooltipTargets('data-tooltip');
