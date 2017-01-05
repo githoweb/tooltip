@@ -6,9 +6,10 @@ body {
   display:inline-block;
   padding:10px;
   color: #fff;
-  background: rgba(100, 10, 10, 0.75);
+  background: rgba(100, 10, 10, 0.9);
   -webkit-border-radius: 10px;
   border-radius: 10px;
 
   position:absolute;
+  z-index: 1;
 }

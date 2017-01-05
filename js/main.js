@@ -2,10 +2,7 @@ var targets = [];
 var tooltipHolder = document.getElementsByTagName('body')[0];
 var tooltipIsActive = 0;
 
-// TODO : create a seperate function to build tooltip dom "createTooltipDom"
-// TODO : create a seperate function to build tooltip dom "createTooltipDom"
-// Idée : Faire une fonction qui gère un état true/false réutilisable ?
-
+// Stocke dans un array la liste des éléments du DOM susceptibles d'avoir une tooltip (en fait c'est une fonction plus générique dressant la liste des éléments du dom ayant un attribut passé en argument)
 function getTooltipTargets(attribute){
 
   var searchedElements = [];
@@ -23,7 +20,7 @@ function getTooltipTargets(attribute){
   return searchedElements;
 }
 
-
+// Si le tooltip est actif, on prend la position et la dimension de l'élement déclencheur
 function tooltipActive(){
 
     if( tooltipIsActive == 0 ){
@@ -65,9 +62,16 @@ function createTooltipDom(){
     var label = e.getAttribute('data-tooltip');
     var tooltipContainer = document.createElement('div');
     var tooltipCssClass = tooltipContainer.setAttribute('class', 'tooltip');
-    //tooltipContainer.setAttribute("style", "left:"+ getElementDimensions[0] +"px;");
     tooltipContainer.innerHTML = label;
     tooltipHolder.appendChild(tooltipContainer);
+
+
+    var customOffset = 20;
+    var tooltipContainerWidth = tooltipContainer.offsetWidth;
+    var tooltipLeftPosition = e.offsetLeft + (e.offsetWidth/2) - tooltipContainerWidth/2;
+    var tooltipTopPosition = e.offsetTop - tooltipContainer.offsetHeight - customOffset;
+
+    tooltipContainer.setAttribute("style", "left:"+ tooltipLeftPosition +"px;"+"top:"+ tooltipTopPosition +"px;");
 }
 
 function tooltipPosition(){
