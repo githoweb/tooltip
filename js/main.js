@@ -25,7 +25,7 @@ function createTooltipDom(e){
     console.log('event.target' + e.getAttribute('data-tooltip'));
     var label = e.getAttribute('data-tooltip');
     var tooltipContainer = document.createElement('div');
-    var tooltipCssClass = tooltipContainer.setAttribute('class', 'tooltip');
+    tooltipContainer.className = 'tooltip tooltip-top';
     tooltipContainer.innerHTML = label;
 
     return tooltipContainer;
