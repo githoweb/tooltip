@@ -25,25 +25,57 @@ function createTooltipDom(e){
     console.log('event.target' + e.getAttribute('data-tooltip'));
     var label = e.getAttribute('data-tooltip');
     var tooltipContainer = document.createElement('div');
-    tooltipContainer.className = 'tooltip tooltip-top';
+
+    tooltipContainer.className = 'tooltip';
     tooltipContainer.innerHTML = label;
 
     return tooltipContainer;
 }
 
 function positionTooltipDom(e, tooltipContainer){
+
+  var tooltipPositionOption = e.getAttribute('data-tooltip-pos');
+  var optionClassName = '';
+  var tooltipLeftPosition;
+  var tooltipTopPosition;
   var customOffset = 20;
+
+  switch(tooltipPositionOption) {
+    case 'left':
+      optionClassName = 'left';
+      tooltipLeftPosition = e.offsetLeft - tooltipContainer.offsetWidth - customOffset;
+      tooltipTopPosition = e.offsetTop + (e.offsetHeight/2) - tooltipContainer.offsetHeight/2;
+      break;
+    case 'right':
+      optionClassName = 'right';
+      tooltipLeftPosition = e.offsetLeft + (e.offsetWidth) + customOffset;
+      tooltipTopPosition = e.offsetTop + (e.offsetHeight/2) - tooltipContainer.offsetHeight/2;
+      break;
+    case 'top':
+      optionClassName = 'top';
+      tooltipLeftPosition = e.offsetLeft + (e.offsetWidth/2) - tooltipContainerWidth/2;
+      tooltipTopPosition = e.offsetTop - tooltipContainer.offsetHeight - customOffset;
+      break;
+    case 'bottom':
+      optionClassName = 'bottom';
+      tooltipLeftPosition = e.offsetLeft + (e.offsetWidth/2) - tooltipContainerWidth/2;
+      tooltipTopPosition = e.offsetTop - tooltipContainer.offsetHeight - customOffset;
+      break;
+    default:
+      optionClassName = 'top';
+      tooltipLeftPosition = e.offsetLeft + (e.offsetWidth/2) - tooltipContainerWidth/2;
+      tooltipTopPosition = e.offsetTop - tooltipContainer.offsetHeight - customOffset;
+  }
+
+  tooltipContainer.className = 'tooltip tooltip-'+optionClassName;
+
+
   var tooltipContainerWidth = tooltipContainer.offsetWidth;
 
   console.log('e.offsetLeft = '+e.offsetLeft);
   console.log('e.offsetTop = '+e.offsetTop);
   console.log('e.offsetWidth = '+e.offsetWidth);
   console.log('e.offsetHeight = '+e.offsetHeight);
-
-  var tooltipLeftPosition = e.offsetLeft + (e.offsetWidth/2) - tooltipContainerWidth/2;
-  var tooltipTopPosition = e.offsetTop - tooltipContainer.offsetHeight - customOffset;
-
-  console.log('tooltipContainer = '+tooltipContainer);
 
   var a = tooltipContainer.offsetLeft;
 
