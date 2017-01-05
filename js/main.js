@@ -20,71 +20,80 @@ function getTooltipTargets(attribute){
   return searchedElements;
 }
 
-// Si le tooltip est actif, on prend la position et la dimension de l'élement déclencheur
-function tooltipActive(){
-
-    if( tooltipIsActive == 0 ){
-
-        getElementPosition();
-        getElementDimensions();
-
-        createTooltipDom();
-        tooltipIsActive = 1;
-    }
-}
-
-function tooltipInactive(){
-
-    if( tooltipIsActive == 1 ){
-        var tooltipContainer = document.getElementsByClassName('tooltip')[0];
-        document.body.removeChild(tooltipContainer);
-        tooltipIsActive = 0;
-    }
-}
-
-function getElementPosition(){
-  var left = event.target.offsetLeft;
-  var top = event.target.offsetTop;
-  console.log('position' + ' ' + left + ' ' + top);
-}
-
-function getElementDimensions(){
-  var width = event.target.offsetWidth;
-  var height = event.target.offsetHeight;
-  var dimensions = [width, height];
-  console.log('dimensions' + ' ' + width + ' ' + height);
-  return dimensions;
-}
-
-function createTooltipDom(){
-    var e = event.target;
+//create dom element for tooltip
+function createTooltipDom(e){
     console.log('event.target' + e.getAttribute('data-tooltip'));
     var label = e.getAttribute('data-tooltip');
     var tooltipContainer = document.createElement('div');
     var tooltipCssClass = tooltipContainer.setAttribute('class', 'tooltip');
     tooltipContainer.innerHTML = label;
-    tooltipHolder.appendChild(tooltipContainer);
 
-
-    var customOffset = 20;
-    var tooltipContainerWidth = tooltipContainer.offsetWidth;
-    var tooltipLeftPosition = e.offsetLeft + (e.offsetWidth/2) - tooltipContainerWidth/2;
-    var tooltipTopPosition = e.offsetTop - tooltipContainer.offsetHeight - customOffset;
-
-    tooltipContainer.setAttribute("style", "left:"+ tooltipLeftPosition +"px;"+"top:"+ tooltipTopPosition +"px;");
+    return tooltipContainer;
 }
 
-function tooltipPosition(){
+function positionTooltipDom(e, tooltipContainer){
+  var customOffset = 20;
+  var tooltipContainerWidth = tooltipContainer.offsetWidth;
 
+  console.log('e.offsetLeft = '+e.offsetLeft);
+  console.log('e.offsetTop = '+e.offsetTop);
+  console.log('e.offsetWidth = '+e.offsetWidth);
+  console.log('e.offsetHeight = '+e.offsetHeight);
+
+  var tooltipLeftPosition = e.offsetLeft + (e.offsetWidth/2) - tooltipContainerWidth/2;
+  var tooltipTopPosition = e.offsetTop - tooltipContainer.offsetHeight - customOffset;
+
+  console.log('tooltipContainer = '+tooltipContainer);
+
+  var a = tooltipContainer.offsetLeft;
+
+  console.log('tooltipContainer.offsetLeft = '+tooltipContainer.offsetLeft);
+  console.log('tooltipContainer.offsetTop = '+tooltipContainer.offsetTop);
+  console.log('tooltipContainer.offsetWidth = '+tooltipContainer.offsetWidth);
+  console.log('tooltipContainer.offsetHeight = '+tooltipContainer.offsetHeight);
+
+  tooltipContainer.setAttribute("style", "left:"+ tooltipLeftPosition +"px;"+"top:"+ tooltipTopPosition +"px;");
 }
 
+// Si le tooltip est actif, on prend la position et la dimension de l'élement déclencheur
+function tooltipActive(){
+
+  var e = event.target;
+
+  if( tooltipIsActive == 0 ){
+
+      tooltipContainer = createTooltipDom(e);
+
+      tooltipHolder.appendChild(tooltipContainer);
+      setTimeout(function(){
+        positionTooltipDom(e, tooltipContainer);
+        tooltipContainer.className += ' readyIn';
+      }, 0);
+      tooltipIsActive = 1;
+
+  }
+}
+
+function tooltipInactive(){
+
+    if( tooltipIsActive == 1 ){
+
+      var tooltipContainer = document.getElementsByClassName('tooltip')[0];
+      tooltipContainer.className = 'tooltip';
+      setTimeout(function(){
+        document.body.removeChild(tooltipContainer);
+        tooltipIsActive = 0;
+      }, 200);
+
+    }
+}
+
+
+// get tooltip targets
 getTooltipTargets('data-tooltip');
 
+// listen to events on tooltip targets
 for (var i = 0; i < targets.length; i++){
   targets[i].addEventListener('mouseover', tooltipActive);
   targets[i].addEventListener('mouseout', tooltipInactive);
-  console.log(targets[i]);
 }
-
-
-//console.log(getTooltipTargets('data-tooltip'));
