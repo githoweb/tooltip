@@ -17,6 +17,7 @@ function getTooltipTargets(attribute){
     }
   }
   targets = searchedElements;
+  console.log('searchedElements : ' + searchedElements);
   return searchedElements;
 }
 
@@ -53,13 +54,13 @@ function positionTooltipDom(e, tooltipContainer){
       break;
     case 'top':
       optionClassName = 'top';
-      tooltipLeftPosition = e.offsetLeft + (e.offsetWidth/2) - tooltipContainerWidth/2;
+      tooltipLeftPosition = e.offsetLeft + (e.offsetWidth/2) - tooltipContainer.offsetWidth/2;
       tooltipTopPosition = e.offsetTop - tooltipContainer.offsetHeight - customOffset;
       break;
     case 'bottom':
       optionClassName = 'bottom';
-      tooltipLeftPosition = e.offsetLeft + (e.offsetWidth/2) - tooltipContainerWidth/2;
-      tooltipTopPosition = e.offsetTop - tooltipContainer.offsetHeight - customOffset;
+      tooltipLeftPosition = e.offsetLeft + (e.offsetWidth/2) - tooltipContainer.offsetWidth/2;
+      tooltipTopPosition = e.offsetTop + e.offsetHeight + customOffset;
       break;
     default:
       optionClassName = 'top';
@@ -71,6 +72,10 @@ function positionTooltipDom(e, tooltipContainer){
 
 
   var tooltipContainerWidth = tooltipContainer.offsetWidth;
+
+  console.log('------------');
+  console.log('e = ' + e);
+  console.log('------------');
 
   console.log('e.offsetLeft = '+e.offsetLeft);
   console.log('e.offsetTop = '+e.offsetTop);
