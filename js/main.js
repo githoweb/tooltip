@@ -157,7 +157,7 @@ function GiTooltip(){
   }
 
 
-  var init = function(target){
+  this.init = function(target){
     getTooltipTargets(target);
     addTooltipListener(targets);
   }
@@ -168,5 +168,5 @@ function GiTooltip(){
 
 
 
-
-GiTooltip.init('data-tooltip');
+var a = new GiTooltip();
+a.init('data-tooltip');
